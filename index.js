@@ -26,8 +26,12 @@ app.get('/usuarios',function(req,res)  {
     ]})
 })
 
+app.get('/add', function(req,res){
+    res.render('adciona.ejs')
+})
+
 app.post('/add',function(req,res){
-    console.log("chegou aqui")
+    console.log("Nome:" + req.body.txtNome + "Email:" + req.body.txtEmail)
 })
 
 app.listen(3000,function(){
