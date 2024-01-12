@@ -1,45 +1,41 @@
-const express = require('express')
-const app = express()
-var bodyParser = require('body-parser')
-var cookieParser = require('cookie-parser')
-var path = require('path')
-var Usuario = require('./model/usuario')
-const usuario = require('./model/usuario')
+const express = require('express');
+const app = express();
+const bodyParser = require('body-parser');
+const cookieParser = require('cookie-parser');
+const path = require('path');
+const Usuario = require('./model/usuario');
 
-app.use(cookieParser())
+app.use(cookieParser());
+app.use(bodyParser.json());
+app.use(bodyParser.urlencoded({ extended: false }));
 
-app.use(bodyParser.json())
-app.use(bodyParser.urlencoded({extended:false}))
+app.set("view engine", "ejs");
+app.use(express.static(path.join(__dirname, "public")));
 
-app.set("view engine","ejs")
+app.get('/', async function (req, res) {
+    res.render('index.ejs', {});
+});
 
-app.use(express.static(path.join(__dirname,"public")))
+app.get('/add', function (req, res) {
+    res.render('adiciona.ejs');
+});
 
-app.get('/',function(req,res)  {
-    res.render('index.ejs',{})
-})
-
-app.get('/add', function(req,res){
-    res.render('adciona.ejs')
-})
-
-app.post('/add',function(req,res){
-   var usuario = new Usuario({
-    nome: req.body.txtNome,
-    email: req.body.txtEmail,
-    senha: req.body.txtSenha,
-    foto: req.body.txtFoto
-   }) 
-   usuario.save(function(err){
-    if(err){
-        console.log(err)
-    }else{
+app.post('/add', async function (req, res) {
+    try {
+        const usuario = new Usuario({
+            nome: req.body.txtNome,
+            email: req.body.txtEmail,
+            senha: req.body.txtSenha,
+            foto: req.body.txtFoto
+        });
+        await usuario.save();
         res.redirect('/');
+    } catch (err) {
+        console.error(err);
+        res.status(500).send('Erro interno do servidor');
     }
-   })
-})
+});
 
-app.listen(3000,function(){
-    console.log("Conexão inicializada")
-    
-})
+app.listen(3000, function () {
+    console.log("Conexão inicializada");
+});
