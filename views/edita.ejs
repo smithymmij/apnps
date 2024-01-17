@@ -1,18 +1,10 @@
-<!DOCTYPE html>
-<html lang="en">
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Formulário de Usuário</title>
-</head>
-<body>
-    <form method="POST">
+<%-include('cabecalho.ejs')%> 
+    <form method="POST" enctype="multipart/form-data">
         Id:<input type="text" name="txtId" readonly value="<%=Usuario._id%>">
         Nome:<input type="text" name="txtNome" placeholder="Nome" value="<%=Usuario.nome%>"><br>
         Email:<input type="email" name="txtEmail" placeholder="Email" value="<%=Usuario.email%>"><br>
-        Senha:<input type="password" name="txtSenha" placeholder="Senha" value="<%=Usuario.senha%>"><br>
-        Foto:<input type="file" name="txtFoto"><br>
+        Senha:<input type="password" name="txtSenha" placeholder="Senha" pattern="^(?=.*[a-zA-Z]).{6,}$" title="A senha deve ter no mínimo 6 caracteres e incluir pelo menos uma letra." required><br>
+        Foto:<input type="file" name="txtFoto" value=""><br>
         <input type="submit" name="Adicionar">
     </form>
-</body>
-</html>
+<%-include('rodape.ejs')%>
